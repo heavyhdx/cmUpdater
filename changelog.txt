@@ -25,3 +25,7 @@ v0.41
 -Functions are now only called if your device is properly connected for faster launching of the script
 
 -Added some more comments
+
+v0.5
+
+-Added variable to switch update-channels (Thanks to github-user oliv5 for implementing this)

@@ -15,7 +15,7 @@ CMVERSION=12.1		#The CyanogenMod-Version you'd like to search for. Example: '11'
 FILEPATH="./"		#The path where the script will download CyanogenMod
 			#If you leave './' everything will go in the directory in which your terminal is opened.
 			#The script will automatically check if the update is already present in the specified directory
-			#!! You NEED to make sure your path ends with / !!
+			# !! You NEED to make sure your path ends with / !!
 			#Added quotation marks in case your path has spaces in it
 
 
@@ -40,8 +40,26 @@ TWRPoptions=SDB 	#Options for the TWRP-backup/restore
 			#Note: There is an option "M" that skips the MD5-generation when creating a backup
 			#For some reason that same letter will enable MD5-verification when restoring a backup
 			#So for safety's sake MD5-generation and verification are ENABLED.
-			#If for some reason you want to disable it, add the letter M here and remove it at line 228 column 47
+			#If for some reason you want to disable it, add the letter M here and remove it at line 256 column 47
 
+
+
+UPDATECHANNEL=NIGHTLY	#Select the update channel you want. It must be the same channel that's currently on your device.
+			#Switching between update-channels is neither supported nor recommended.
+
+			#Most up-to-date (nightly updates)
+
+			# NIGHTLY
+
+			#Less frequently updated
+
+			# STABLE
+			# RC		(Release Candidate)
+			# SNAPSHOT
+			# MILESTONE
+			# TEST		(Experimental)
+
+			
 #Check the end of the script for all of the variables with comments
 
 
@@ -119,12 +137,15 @@ ___________________________________________________
 }
 
 versionVerifier(){
+clear
 echo
 	if [[ -n ${ADB} ]]; then
-		echo 'Your current CyanogenMod-version is' ${ADB} 
+		echo "Update channel: $UPDATECHANNEL"
+		echo
+		echo "Installed: CM $ADB"
 		updateChecker
 	else
-		echo 'error: Your specified CyanogenMod-version and the device-version differ, or your device is not connected properly. Exiting'
+		echo 'error: Your specified CyanogenMod-version and the device-version differ. Exiting'
 		exit
 	fi
 }
@@ -133,7 +154,14 @@ echo
 updateChecker(){
 echo
 	if [[ ${ADB} < ${CURL} ]]; then
-		read -p "An updated version is available (cm-${CURL}). Do you want to download it? (y/n)" -n 1 -r
+		echo "Available: CM ${CURL}"
+		echo
+		echo "Update MD5: $MD5"
+		echo
+		echo "Update URL: $WGETURL"
+		echo
+		
+		read -p "Do you want to download the update? (y/n)" -n 1 -r
 		echo 
 			if [[ $REPLY =~ ^[Yy]$ ]]; then
     				updateDownloader
@@ -302,27 +330,33 @@ adb shell twrp wipe dalvik
 start
 }
 
-
-
 if adb shell cd /; then 
 #Checks if your device is connected.
 #If "adb shell cd /" returns an error, it will exit. If it doesn't, it will set all variables and continue.
 
-	ADB=$(adb shell grep -o ${CMVERSION}'-........-NIGHTLY-'${DEVICE} /system/build.prop | head -n1)
+	echo "Retrieving information. Please wait ..."
+	
+	URL='https://download.cyanogenmod.org/?device='${DEVICE}'&type='${UPDATECHANNEL}
+	#Gets the URL of your device's CyanogenMod-page
+
+	VERSION_REGEX="${CMVERSION}-........-${UPDATECHANNEL}(-[^-]*){0,1}-${DEVICE}"
+	#Puts together your options to form a string that is used to search for updates.
+	
+	ADB="$(adb shell grep ${CMVERSION}-........-${UPDATECHANNEL}-${DEVICE} /system/build.prop | head -n1 | cut -c 15-50)"
 	#Reads the currently installed CM-version from your device's /system/build.prop
 
 	WAITFORDEVICE="adb wait-for-device" 
 	#Added this as a variable because otherwise it would always mess up the coloring in gedit due to the word "for".
 
-	CURL=$(curl -s 'https://download.cyanogenmod.org/?device='${DEVICE} | grep -o ${CMVERSION}'-........-NIGHTLY-'${DEVICE} | head -n1 | grep ${CMVERSION}'-........-NIGHTLY-'${DEVICE} ) 
+	CURL="$(curl -s "$URL" | grep -Eo "$VERSION_REGEX" | head -n1)" 
 	#Searches the CyanogenMod-website of your device for the latest update
 
-	MD5=$(curl -s 'https://download.cyanogenmod.org/?device='${DEVICE} | grep -o 'md5sum: ................................' | cut -c 8-40 | head -n1) 
+	MD5="$(curl -s "$URL" | grep -o 'md5sum: ................................' | cut -c 9-40 | head -n1)"
 	#Gets the MD5-hash for the latest update
 
-	WGETURL=$(curl -s 'https://download.cyanogenmod.org/?device='${DEVICE} | grep -v 'jen' | grep -o -m1 'http://get.cm/get/...' | head -n1) 
+	WGETURL="$(curl -s "$URL" | grep -v 'jen' | grep -o -m1 'http://get.cm/get/...' | head -n1)"
 	#Selects the most recent direct-link to the CyanogenMod-zip
-		
+
 	start
 else
 	echo

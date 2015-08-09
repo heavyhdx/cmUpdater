@@ -1,8 +1,8 @@
-# cmUpdater v0.41
+# cmUpdater v0.5
 
 #What is this?
 
-This is a Bash-script that allows you to backup, restore and update your CyanogenMod-device from your PC
+This is a Bash-script that allows you to backup, restore and update your CyanogenMod-device from your PC.
 
 #Features
 
@@ -10,7 +10,10 @@ This is a Bash-script that allows you to backup, restore and update your Cyanoge
 
 -Checks for available updates by comparing the CyanogenMod-verison on your device with the newest one available
 
--If the latest CyanogenMod-update version differs from that on your device, you'll get an error to prevent you from getting the wrong files (for example flashing CM11 over CM12)
+-Switch update-channels (Thanks to github-user oliv5 for implementing this!)
+
+-If the latest CyanogenMod-update version differs from that on your device, you'll get an error to prevent you from getting the wrong files
+Example: Flashing CM11 over CM12 or changing update-channels.
 
 -Downloads the update
 
@@ -46,9 +49,8 @@ This is a Bash-script that allows you to backup, restore and update your Cyanoge
 
 #Limitations
 
--This can only download the latest nightly of the highest version of CM that is available on your device, in other words the top file from your device's CyanogenMod-website (e.g. https://download.cyanogenmod.org/?device=victara)
-
--TWRP names the backup-folder differently for every single device (the path is /sdcard/TWRP/BACKUPS/RandomDeviceID/) so I have to delete BACKUPS/ to make sure there's no backup already there.
+-TWRP names the backup-folder differently for every single device (the path is /sdcard/TWRP/BACKUPS/RandomDeviceID/).
+I have to delete BACKUPS/ to make sure there's no backup already there.
 That means that if you have other backups there, they will be removed! So make sure you save them before running this, if you have any.
 
 -Same thing with the backup-folder in your specified directory on your PC:
@@ -56,7 +58,7 @@ It will get deleted if you pull a new backup from your device, so if you want to
 
 #How to use
 
-Make sure you meet all requirements and then replace my device-information in the cmupdater.sh file with yours, set all options to your liking and then run the file via the terminal
+Make sure you meet all requirements and then replace my device-information in the cmUpdater.sh file with yours, set all options to your liking and then run the file via the terminal
 
 # -
 
