@@ -12,7 +12,9 @@ v0.3:
 
 -Added restore-option for backups
 
--Completely changed the way functions are called (used to be a chain where all functions called other functions, now it's a menu). This also allows for much simpler implementation of new features and changes in the future.
+-Completely changed the way functions are called (used to be a chain where all functions called other functions, now it's a menu).
+
+ This also allows for much simpler implementation of new features and changes in the future.
 
 -Deleted the cmDownloader-project and implemented all features into this one
 

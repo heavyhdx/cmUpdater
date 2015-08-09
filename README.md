@@ -14,7 +14,7 @@ This is a Bash-script that allows you to backup, restore and update your Cyanoge
 
 -If the latest CyanogenMod-update version differs from that on your device, you'll get an error to prevent you from getting the wrong files.
 
-Example: Flashing CM11 over CM12 or changing update-channels.
+ Example: Flashing CM11 over CM12 or changing update-channels.
 
 -Downloads the update
 
@@ -52,13 +52,13 @@ Example: Flashing CM11 over CM12 or changing update-channels.
 
 -TWRP names the backup-folder differently for every single device (the path is /sdcard/TWRP/BACKUPS/RandomDeviceID/).
 
-I have to delete BACKUPS/ to make sure there's no backup already there.
+ I have to delete BACKUPS/ to make sure there's no backup already there.
 
-That means that if you have other backups there, they will be removed! So make sure you save them before running this, if you have any.
+ That means that if you have other backups there, they will be removed! So make sure you save them before running this, if you have any.
 
 -Same thing with the backup-folder in your specified directory on your PC:
 
-It will get deleted if you pull a new backup from your device, so if you want to keep old backups you'll have to move them to another location.
+ It will get deleted if you pull a new backup from your device, so if you want to keep old backups you'll have to move them to another location.
 
 #How to use
 
