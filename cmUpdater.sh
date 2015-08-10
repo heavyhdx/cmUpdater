@@ -2,26 +2,33 @@
 
 #VARIABLES:
 
-
+#------------------------------------------------------------------------------------------------------------------------------------------
 DEVICE=victara		#put your Device-ID here, for example 'hammerhead' for Nexus 5 (without quotes)
+#------------------------------------------------------------------------------------------------------------------------------------------
+CMVERSION=12.1		#The CyanogenMod-Version you'd like to search for. Example: '11' (without quotes)
+#------------------------------------------------------------------------------------------------------------------------------------------
+UPDATECHANNEL=NIGHTLY	#Select the update channel you want
 
+			#Most up-to-date (nightly updates)
 
+			# NIGHTLY
 
-CMVERSION=12.1		#The CyanogenMod-Version you'd like to search for. Example: '11' (without quotes).
-			#Note: If the version you put here differs from the one on your device, you'll get an error to protect your device.
+			#Less frequently updated
 
-
-
-FILEPATH="./"		#The path where the script will download CyanogenMod
-			#If you leave './' everything will go in the directory in which your terminal is opened.
-			#The script will automatically check if the update is already present in the specified directory
-			# !! You NEED to make sure your path ends with / !!
-			#Added quotation marks in case your path has spaces in it
-
-
-
+			# STABLE
+			# RC		(Release Candidate)
+			# SNAPSHOT
+			# MILESTONE
+			# TEST		(Experimental)
+#------------------------------------------------------------------------------------------------------------------------------------------
+FILEPATH="./"		#The path where the script will download CyanogenMod and store backups
+			#If you leave './' everything will go in the directory in which your terminal is opened
+			# !! You NEED to make sure your path ends with / and you keep the quotes !!
+#------------------------------------------------------------------------------------------------------------------------------------------
 TWRPoptions=SDB 	#Options for the TWRP-backup/restore
-			#Add partitions and options to your liking. Make sure there are only upper case letters and no spaces or symbols!
+			#Add partitions and options to your liking.
+
+			#Make sure there are only upper case letters and no spaces, numbers or symbols!
 
 			#Partitions:
 
@@ -39,29 +46,13 @@ TWRPoptions=SDB 	#Options for the TWRP-backup/restore
 			
 			#Note: There is an option "M" that skips the MD5-generation when creating a backup
 			#For some reason that same letter will enable MD5-verification when restoring a backup
-			#So for safety's sake MD5-generation and verification are ENABLED.
+			#So for safety's sake, MD5-generation and verification are ENABLED
 			#If for some reason you want to disable it, add the letter M here and remove it at line 256 column 47
+#------------------------------------------------------------------------------------------------------------------------------------------
 
+#You can only search for updates if your device currently has the same device ID, CyanogenMod-version and update channel as specified above
 
-
-UPDATECHANNEL=NIGHTLY	#Select the update channel you want. It must be the same channel that's currently on your device.
-			#Switching between update-channels is neither supported nor recommended.
-
-			#Most up-to-date (nightly updates)
-
-			# NIGHTLY
-
-			#Less frequently updated
-
-			# STABLE
-			# RC		(Release Candidate)
-			# SNAPSHOT
-			# MILESTONE
-			# TEST		(Experimental)
-
-			
-#Check the end of the script for all of the variables with comments
-
+#Check the end of the script for all other variables with comments
 
 #------------------------------------------------------------------------------------------------------------------------------------------
 
