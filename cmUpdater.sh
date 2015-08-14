@@ -342,7 +342,7 @@ if adb shell cd /; then
 	CURL="$(curl -s "$URL" | grep -Eo "$VERSION_REGEX" | head -n1)" 
 	#Searches the CyanogenMod-website of your device for the latest update
 
-	MD5="$(curl -s "$URL" | grep -o 'md5sum: ................................' | cut -c 9-40 | head -n1)"
+	MD5="$(curl -s "${URL}" | grep -o 'md5: ................................' | head -n1 | cut -c 5-37)"
 	#Gets the MD5-hash for the latest update
 
 	WGETURL="$(curl -s "$URL" | grep -v 'jen' | grep -o -m1 'http://get.cm/get/...' | head -n1)"
