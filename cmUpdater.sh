@@ -333,7 +333,7 @@ if adb shell cd /; then
 	VERSION_REGEX="${CMVERSION}-........-${UPDATECHANNEL}(-[^-]*){0,1}-${DEVICE}"
 	#Puts together your options to form a string that is used to search for updates.
 	
-	ADB=12.1-20150813-NIGHTLY-victara #"$(adb shell grep ${CMVERSION}-........-${UPDATECHANNEL}-${DEVICE} /system/build.prop | head -n1 | cut -c 15-50)"
+	ADB="$(adb shell grep ${CMVERSION}-........-${UPDATECHANNEL}-${DEVICE} /system/build.prop | head -n1 | cut -c 15-50)"
 	#Reads the currently installed CM-version from your device's /system/build.prop
 
 	WAITFORDEVICE="adb wait-for-device" 
