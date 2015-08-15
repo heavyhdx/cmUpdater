@@ -112,7 +112,7 @@ ___________________________________________________
 				start
 			fi
 			if [[ $REPLY =~ ^[7]$ ]]; then
-				read -p "This will remove all updates and MD5-files from your PC, are you sure? (y/n)" -n 1 -r
+				read -p "This will remove all updates from your PC, are you sure? (y/n)" -n 1 -r
 				echo 
 					if [[ $REPLY =~ ^[Yy]$ ]]; then
     						updateRemover
@@ -147,7 +147,7 @@ echo
 	if [[ ${ADB} < ${CURL} ]]; then
 		echo "Available: CM ${CURL}"
 		echo
-		echo "Update MD5: $MD5"
+		echo "Update sha1: $SHA1"
 		echo
 		echo "Update URL: $WGETURL"
 		echo
@@ -186,8 +186,8 @@ echo
 updateDownloader2(){
 echo
 wget ${WGETURL} -O "${FILEPATH}cm-${CURL}.zip"
-echo ${MD5} > "${FILEPATH}cm-${CURL}.zip.md5"
-echo "Update and MD5 downloaded!"
+#echo ${MD5} > "${FILEPATH}cm-${CURL}.zip.md5"
+echo "Update downloaded!"
 sleep 5
 start
 }
@@ -278,13 +278,13 @@ cmUpdater(){
 		echo 'Waiting for device...'
 		${WAITFORDEVICE} shell exit
 		sleep 5
-		echo "Pushing MD5 to /sdcard/..."
-		adb push ${FILEPATH}cm-${CURL}.zip.md5 /sdcard/cm-${CURL}.zip.md5
-		echo "Pushing 'cm-${CURL}.zip' to /sdcard/..."
+		#echo "Pushing MD5 to /sdcard/..."
+		#adb push ${FILEPATH}cm-${CURL}.zip.md5 /sdcard/cm-${CURL}.zip.md5
+		#echo "Pushing 'cm-${CURL}.zip' to /sdcard/..."
 		adb push ${FILEPATH}cm-${CURL}.zip /sdcard/cm-${CURL}.zip
 		adb shell twrp install /sdcard/cm-${CURL}.zip
 		adb shell rm /sdcard/cm-${CURL}.zip
-		adb shell rm /sdcard/cm-${CURL}.zip.md5
+		#adb shell rm /sdcard/cm-${CURL}.zip.md5
 		read -p "Installation finished. Do you want clear cache and dalvik-cache? (recommended) (y/n)" -n 1 -r
 		echo 
 			if [[ $REPLY =~ ^[Yy]$ ]]; then
@@ -333,7 +333,7 @@ if adb shell cd /; then
 	VERSION_REGEX="${CMVERSION}-........-${UPDATECHANNEL}(-[^-]*){0,1}-${DEVICE}"
 	#Puts together your options to form a string that is used to search for updates.
 	
-	ADB="$(adb shell grep ${CMVERSION}-........-${UPDATECHANNEL}-${DEVICE} /system/build.prop | head -n1 | cut -c 15-50)"
+	ADB=12.1-20150813-NIGHTLY-victara #"$(adb shell grep ${CMVERSION}-........-${UPDATECHANNEL}-${DEVICE} /system/build.prop | head -n1 | cut -c 15-50)"
 	#Reads the currently installed CM-version from your device's /system/build.prop
 
 	WAITFORDEVICE="adb wait-for-device" 
@@ -342,7 +342,10 @@ if adb shell cd /; then
 	CURL="$(curl -s "$URL" | grep -Eo "$VERSION_REGEX" | head -n1)" 
 	#Searches the CyanogenMod-website of your device for the latest update
 
-	MD5="$(curl -s "${URL}" | grep -o 'md5: ................................' | head -n1 | cut -c 5-37)"
+	SHA1="$(curl -s "$URL" | grep -o 'sha1: ........................................' | head -n1 | cut -c 7-47)"
+	#Gets the SHA1 hash for the latest update
+
+	#MD5="$(curl -s "${URL}" | grep -o 'md5: ................................' | head -n1 | cut -c 5-37)"
 	#Gets the MD5-hash for the latest update
 
 	WGETURL="$(curl -s "$URL" | grep -v 'jen' | grep -o -m1 'http://get.cm/get/...' | head -n1)"

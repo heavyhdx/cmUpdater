@@ -24,7 +24,7 @@ This is a Bash-script that allows you to backup, restore and update your Cyanoge
 
 -Automatic installation of the downloaded update (TWRP required)
 
--MD5-generation and verification for backups and updates in TWRP
+-MD5-generation and verification for backups in TWRP
 
 -Path of work environment can be changed
 

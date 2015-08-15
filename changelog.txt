@@ -31,3 +31,5 @@ v0.41
 v0.5
 
 -Added variable to switch update-channels (Thanks to github-user oliv5 for implementing this)
+
+-Removed MD5 verification for updates because CyanogenMod switched to sha1 which TWRP can't utilize yet.
