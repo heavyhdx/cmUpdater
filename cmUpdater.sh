@@ -348,7 +348,7 @@ if adb shell cd /; then
 	#MD5="$(curl -s "${URL}" | grep -o 'md5: ................................' | head -n1 | cut -c 5-37)"
 	#Gets the MD5-hash for the latest update
 
-	WGETURL="$(curl -s "$URL" | grep -v 'jen' | grep -o -m1 'http://get.cm/get/...' | head -n1)"
+	WGETURL="https://download.cyanogenmod.org$(curl -s "$URL" |  grep -o -m1 /get/jenkins/....../cm-$CMVERSION-........-$UPDATECHANNEL-$DEVICE.zip)"
 	#Selects the most recent direct-link to the CyanogenMod-zip
 
 	start
