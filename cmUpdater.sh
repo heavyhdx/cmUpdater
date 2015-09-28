@@ -211,9 +211,10 @@ echo
 		adb shell rm -r /sdcard/TWRP/BACKUPS/
 		echo
 		echo 'Moved backups to the PC and removed them from the device.'
-		rebooter
+		sleep 2
+		start
 	else
-		rebooter
+		start
 		
 	fi
 }
@@ -252,23 +253,11 @@ read -p "Do you want to remove it from your device? (y/n)" -n 1 -r
 		adb shell rm -r /sdcard/TWRP/BACKUPS/
 		echo
 		echo 'Removed backup from the device.'
-		rebooter
+		sleep 3
+		start
 	else
-		rebooter
+		start
 	fi
-}
-
-rebooter(){
-echo
-read -p "Do you want to reboot your device? (y/n)" -n 1 -r
-			if [[ $REPLY =~ ^[Yy]$ ]]; then
-				adb reboot
-				echo
-				echo "Exiting. Have a nice day!"
-				exit
-			else
-				start
-			fi
 }
 
 cmUpdater(){
@@ -280,7 +269,7 @@ cmUpdater(){
 		sleep 5
 		#echo "Pushing MD5 to /sdcard/..."
 		#adb push ${FILEPATH}cm-${CURL}.zip.md5 /sdcard/cm-${CURL}.zip.md5
-		#echo "Pushing 'cm-${CURL}.zip' to /sdcard/..."
+		echo "Pushing 'cm-${CURL}.zip' to /sdcard/..."
 		adb push ${FILEPATH}cm-${CURL}.zip /sdcard/cm-${CURL}.zip
 		adb shell twrp install /sdcard/cm-${CURL}.zip
 		adb shell rm /sdcard/cm-${CURL}.zip
