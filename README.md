@@ -1,4 +1,4 @@
-# cmUpdater v0.5
+# cmUpdater v0.6
 
 #What is this?
 
@@ -42,7 +42,7 @@ This is a Bash-script that allows you to backup, restore and update your Cyanoge
 
 -You need Cygwin to run this on Windows (Base-package, curl from "Net" and wget from "Web" in the installation-process)
 
--You NEED TWRP for installing the .zip remotely on your device and making/restoring backups
+-You need TWRP for installing the .zip remotely on your device and making/restoring backups
 
 -You need CyanogenMod for updating CyanogenMod (duh)
 

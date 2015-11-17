@@ -123,6 +123,7 @@ ___________________________________________________
 			if [[ $REPLY =~ ^[Ee]$ ]]; then
 				echo
 				echo "Exiting. Have a nice day!"
+				rm ${FILEPATH}.url
 				exit
 			fi
 }
@@ -137,6 +138,7 @@ echo
 		updateChecker
 	else
 		echo 'error: Your specified CyanogenMod-version and the device-version differ. Exiting'
+		rm ${FILEPATH}.url
 		exit
 	fi
 }
@@ -170,7 +172,7 @@ echo
 updateDownloader(){
 echo
 	if [ -f "${FILEPATH}cm-${CURL}.zip" ]; then
-		read -p "Update found at ${FILEPATH} (cm-${CURL}.zip). Do you want to overwrite?" -n 1 -r
+		read -p "Update found at ${FILEPATH} (cm-${CURL}.zip). Do you want to overwrite? (y/n)" -n 1 -r
 		echo 
 		if [[ $REPLY =~ ^[Yy]$ ]]; then
 			updateDownloader2
@@ -319,6 +321,9 @@ if adb shell cd /; then
 	URL='https://download.cyanogenmod.org/?device='${DEVICE}'&type='${UPDATECHANNEL}
 	#Gets the URL of your device's CyanogenMod-page
 
+	$(curl -s ${URL} > ${FILEPATH}.url)
+	#Gets all relevant information and puts it into a file instead of having each variable load it seperately to increase speed
+
 	VERSION_REGEX="${CMVERSION}-........-${UPDATECHANNEL}(-[^-]*){0,1}-${DEVICE}"
 	#Puts together your options to form a string that is used to search for updates.
 	
@@ -328,16 +333,13 @@ if adb shell cd /; then
 	WAITFORDEVICE="adb wait-for-device" 
 	#Added this as a variable because otherwise it would always mess up the coloring in gedit due to the word "for".
 
-	CURL="$(curl -s "$URL" | grep -Eo "$VERSION_REGEX" | head -n1)" 
+	CURL="$(cat ${FILEPATH}.url | grep -Eo "$VERSION_REGEX" | head -n1)" 
 	#Searches the CyanogenMod-website of your device for the latest update
 
-	SHA1="$(curl -s "$URL" | grep -o 'sha1: ........................................' | head -n1 | cut -c 7-47)"
+	SHA1="$(cat ${FILEPATH}.url | grep -o 'sha1: ........................................' | head -n1 | cut -c 7-47)"
 	#Gets the SHA1 hash for the latest update
 
-	#MD5="$(curl -s "${URL}" | grep -o 'md5: ................................' | head -n1 | cut -c 5-37)"
-	#Gets the MD5-hash for the latest update
-
-	WGETURL="https://download.cyanogenmod.org$(curl -s "$URL" |  grep -o -m1 /get/jenkins/....../cm-$CMVERSION-........-$UPDATECHANNEL-$DEVICE.zip)"
+	WGETURL="https://download.cyanogenmod.org$(cat ${FILEPATH}.url |  grep -o -m1 /get/jenkins/....../cm-$CMVERSION-........-$UPDATECHANNEL-$DEVICE.zip)"
 	#Selects the most recent direct-link to the CyanogenMod-zip
 
 	start
