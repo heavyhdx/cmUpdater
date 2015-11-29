@@ -5,7 +5,7 @@
 #------------------------------------------------------------------------------------------------------------------------------------------
 DEVICE=victara		#put your Device-ID here, for example 'hammerhead' for Nexus 5 (without quotes)
 #------------------------------------------------------------------------------------------------------------------------------------------
-CMVERSION=12.1		#The CyanogenMod-Version you'd like to search for. Example: '11' (without quotes)
+CMVERSION=13.0		#The CyanogenMod-Version you'd like to search for. Example: '13.0' (without quotes)
 #------------------------------------------------------------------------------------------------------------------------------------------
 UPDATECHANNEL=NIGHTLY	#Select the update channel you want
 
@@ -43,11 +43,11 @@ TWRPoptions=SDB 	#Options for the TWRP-backup/restore
 			#Options:
 
 			# O = use compression
-			
+
 			#Note: There is an option "M" that skips the MD5-generation when creating a backup
 			#For some reason that same letter will enable MD5-verification when restoring a backup
 			#So for safety's sake, MD5-generation and verification are ENABLED
-			#If for some reason you want to disable it, add the letter M here and remove it at line 250 column 47
+			#If for some reason you want to disable it, add the letter M here and remove it at line 256 column 47
 #------------------------------------------------------------------------------------------------------------------------------------------
 
 #You can only search for updates if your device currently has the same device ID, CyanogenMod-version and update channel as specified above
@@ -83,7 +83,7 @@ What would you like to do?
 ___________________________________________________
 
 " -n 1 -r
-		echo 
+		echo
 			if [[ $REPLY =~ ^[1]$ ]]; then
 				versionVerifier
 			fi
@@ -98,14 +98,14 @@ ___________________________________________________
 			fi
 			if [[ $REPLY =~ ^[5]$ ]]; then
 				read -p "This will wipe /cache/ and /data/dalvik-cache/, are you sure? (y/n)" -n 1 -r
-				echo 
+				echo
 					if [[ $REPLY =~ ^[Yy]$ ]]; then
     						adb reboot recovery
 						clearCache
 					else
 						start
 					fi
-				
+
 			fi
 			if [[ $REPLY =~ ^[6]$ ]]; then
 				adb reboot
@@ -113,7 +113,7 @@ ___________________________________________________
 			fi
 			if [[ $REPLY =~ ^[7]$ ]]; then
 				read -p "This will remove all updates from your PC, are you sure? (y/n)" -n 1 -r
-				echo 
+				echo
 					if [[ $REPLY =~ ^[Yy]$ ]]; then
     						updateRemover
 					else
@@ -153,15 +153,15 @@ echo
 		echo
 		echo "Update URL: $WGETURL"
 		echo
-		
+
 		read -p "Do you want to download the update? (y/n)" -n 1 -r
-		echo 
+		echo
 			if [[ $REPLY =~ ^[Yy]$ ]]; then
     				updateDownloader
 			else
 				start
 			fi
-	else	
+	else
 		echo
 		echo 'No update is available.'
 		sleep 5
@@ -173,7 +173,7 @@ updateDownloader(){
 echo
 	if [ -f "${FILEPATH}cm-${CURL}.zip" ]; then
 		read -p "Update found at ${FILEPATH} (cm-${CURL}.zip). Do you want to overwrite? (y/n)" -n 1 -r
-		echo 
+		echo
 		if [[ $REPLY =~ ^[Yy]$ ]]; then
 			updateDownloader2
 		else
@@ -188,7 +188,6 @@ echo
 updateDownloader2(){
 echo
 wget ${WGETURL} -O "${FILEPATH}cm-${CURL}.zip"
-#echo ${MD5} > "${FILEPATH}cm-${CURL}.zip.md5"
 echo "Update downloaded!"
 sleep 5
 start
@@ -198,14 +197,14 @@ backupCreator(){
 adb reboot recovery
 echo
 echo 'Waiting for device...'
-${WAITFORDEVICE} shell twrp backup ${TWRPoptions} cmbackup
+adb wait-for-device shell twrp backup ${TWRPoptions} cmbackup
 twrpBackup
 }
 
 twrpBackup(){
 echo
 read -p "Backup finished. Do you want to copy it to your PC and remove it from the device? (y/n)" -n 1 -r
-echo 
+echo
 	if [[ $REPLY =~ ^[Yy]$ ]]; then
 		rm -r ${FILEPATH}backup/
     		adb pull /sdcard/TWRP/BACKUPS/ "${FILEPATH}backup/"
@@ -217,7 +216,7 @@ echo
 		start
 	else
 		start
-		
+
 	fi
 }
 
@@ -227,7 +226,7 @@ echo
 		echo "Backup found at ${FILEPATH}backup "
 		cat "${FILEPATH}backup/date.txt"
 		read -p "Are you sure you want to restore this backup? (y/n)" -n 1 -r
-		echo 
+		echo
 			if [[ $REPLY =~ ^[Yy]$ ]]; then
 				twrpRestorer1
 			else
@@ -246,7 +245,7 @@ echo "Waiting for device..."
 echo
 echo "Pushing backup to device..."
 echo
-${WAITFORDEVICE} push ${FILEPATH}backup/ /sdcard/TWRP/BACKUPS/
+adb wait-for-device push ${FILEPATH}backup/ /sdcard/TWRP/BACKUPS/
 adb shell twrp restore cmbackup ${TWRPoptions}M
 echo
 echo "Backup restored."
@@ -267,17 +266,14 @@ cmUpdater(){
 		adb reboot recovery
 		echo
 		echo 'Waiting for device...'
-		${WAITFORDEVICE} shell exit
+		adb wait-for-device shell exit
 		sleep 5
-		#echo "Pushing MD5 to /sdcard/..."
-		#adb push ${FILEPATH}cm-${CURL}.zip.md5 /sdcard/cm-${CURL}.zip.md5
 		echo "Pushing 'cm-${CURL}.zip' to /sdcard/..."
 		adb push ${FILEPATH}cm-${CURL}.zip /sdcard/cm-${CURL}.zip
 		adb shell twrp install /sdcard/cm-${CURL}.zip
 		adb shell rm /sdcard/cm-${CURL}.zip
-		#adb shell rm /sdcard/cm-${CURL}.zip.md5
 		read -p "Installation finished. Do you want clear cache and dalvik-cache? (recommended) (y/n)" -n 1 -r
-		echo 
+		echo
 			if [[ $REPLY =~ ^[Yy]$ ]]; then
 				clearCache
 			else
@@ -307,17 +303,17 @@ echo
 }
 
 clearCache(){
-${WAITFORDEVICE} shell twrp wipe cache
+adb wait-for-device shell twrp wipe cache
 adb shell twrp wipe dalvik
 start
 }
 
-if adb shell cd /; then 
+if adb shell cd /; then
 #Checks if your device is connected.
 #If "adb shell cd /" returns an error, it will exit. If it doesn't, it will set all variables and continue.
 
 	echo "Retrieving information. Please wait ..."
-	
+
 	URL='https://download.cyanogenmod.org/?device='${DEVICE}'&type='${UPDATECHANNEL}
 	#Gets the URL of your device's CyanogenMod-page
 
@@ -326,14 +322,11 @@ if adb shell cd /; then
 
 	VERSION_REGEX="${CMVERSION}-........-${UPDATECHANNEL}(-[^-]*){0,1}-${DEVICE}"
 	#Puts together your options to form a string that is used to search for updates.
-	
+
 	ADB="$(adb shell grep ${CMVERSION}-........-${UPDATECHANNEL}-${DEVICE} /system/build.prop | head -n1 | cut -c 15-50)"
 	#Reads the currently installed CM-version from your device's /system/build.prop
 
-	WAITFORDEVICE="adb wait-for-device" 
-	#Added this as a variable because otherwise it would always mess up the coloring in gedit due to the word "for".
-
-	CURL="$(cat ${FILEPATH}.url | grep -Eo "$VERSION_REGEX" | head -n1)" 
+	CURL="$(cat ${FILEPATH}.url | grep -Eo "$VERSION_REGEX" | head -n1)"
 	#Searches the CyanogenMod-website of your device for the latest update
 
 	SHA1="$(cat ${FILEPATH}.url | grep -o 'sha1: ........................................' | head -n1 | cut -c 7-47)"
