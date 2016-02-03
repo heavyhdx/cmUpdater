@@ -246,7 +246,7 @@ echo
 echo "Pushing backup to device..."
 echo
 adb wait-for-device push ${FILEPATH}backup/ /sdcard/TWRP/BACKUPS/
-adb shell twrp restore cmbackup ${TWRPoptions}
+adb shell twrp restore cmbackup ${TWRPoptions}M
 echo
 echo "Backup restored."
 read -p "Do you want to remove it from your device? (y/n)" -n 1 -r
@@ -317,7 +317,7 @@ if adb shell cd /; then
 	URL='https://download.cyanogenmod.org/?device='${DEVICE}'&type='${UPDATECHANNEL}
 	#Gets the URL of your device's CyanogenMod-page
 
-	$(wget -q --output-document=${FILEPATH}.url ${URL}) #(curl -s ${URL} > ${FILEPATH}.url)
+	$(wget -q --output-document=${FILEPATH}.url ${URL})
 	#Gets all relevant information and puts it into a file instead of having each variable load it seperately to increase speed
 
 	VERSION_REGEX="${CMVERSION}-........-${UPDATECHANNEL}(-[^-]*){0,1}-${DEVICE}"
