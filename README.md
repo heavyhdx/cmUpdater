@@ -4,6 +4,8 @@
 
 This is a Bash-script that allows you to backup, restore and update your CyanogenMod-device from your PC.
 
+![alt tag](https://i.imgur.com/hivgnDB.png)
+
 #Features
 
 -Updating works with every device that is officialy supported by CyanogenMod, backup and restore works with every Android-Device with a recent version of TWRP.
