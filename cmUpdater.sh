@@ -64,21 +64,21 @@ read -p "___________________________________________________
 
 What would you like to do?
 
--Search for CyanogenMod-updates ............... (1)
+-Search for CyanogenMod-updates ................ 1
 
--Create a TWRP-backup ......................... (2)
+-Create a TWRP-backup .......................... 2
 
--Restore a TWRP-backup ........................ (3)
+-Restore a TWRP-backup ......................... 3
 
--Update CyanogenMod in TWRP ................... (4)
+-Update CyanogenMod in TWRP .................... 4
 
--Clear Cache & Dalvik-Cache in TWRP ........... (5)
+-Clear Cache & Dalvik-Cache in TWRP ............ 5
 
--Reboot your device ........................... (6)
+-Reboot your device ............................ 6
 
--Remove old updates from your PC .............. (7)
+-Remove old updates from your PC ............... 7
 
--Exit ......................................... (e)
+-Exit .......................................... e
 
 ___________________________________________________
 
