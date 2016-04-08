@@ -40,9 +40,14 @@ This is a Bash-script that allows you to backup, restore and update your Cyanoge
 
 -USB-debugging and must be enabled (you can do that in the Developer-Options)
 
+-Should run out of the box on OS X after you've installed the Android tools
+
 -On Windows you need to make sure that your drivers are working properly, both in the system and in the recovery
 
--You need Cygwin to run this on Windows (Base-package, curl from "Net" and wget from "Web" in the installation-process)
+-On Windows 10 you can run this by installing the "Windows subsystem for Linux (beta)" from the "Turn Windows features on or off" menu.
+ You probably need to enable Windows Insider builds until it leaves beta.
+
+-You need Cygwin to run this on Windows <10 (Base-package, curl from "Net" and wget from "Web" in the installation-process)
 
 -You need TWRP for installing the .zip remotely on your device and making/restoring backups
 
