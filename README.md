@@ -4,7 +4,9 @@
 
 This is a Bash-script that allows you to backup, restore and update your CyanogenMod-device from your PC.
 
-![alt tag](http://i.imgur.com/Yc7Mb61.png)
+![alt tag](http://i.imgur.com/0m7lb5t.png)
+
+![alt tag](http://i.imgur.com/Xiwoile.png)
 
 #Features
 
