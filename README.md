@@ -71,7 +71,9 @@ This is a Bash-script that allows you to backup, restore and update your Cyanoge
 
 #How to use
 
-Make sure you meet all requirements and then replace my device-information in the cmUpdater.sh file with yours, set all options to your liking and then run the file via the terminal
+Make sure you meet all requirements and then replace my device-information in the cmUpdater.sh file with yours, set all options to your liking and then run the file via the terminal.
+
+It may be necessary to mark it as executable, you can do that by running $ chmod +x cmUpdater.sh
 
 # -
 
