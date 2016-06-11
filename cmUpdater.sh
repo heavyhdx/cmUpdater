@@ -197,7 +197,7 @@ backupCreator(){
 adb reboot recovery
 echo
 echo 'Waiting for device...'
-waitForDevice
+waitForDevice 2> /dev/null
 adb shell twrp backup ${TWRPoptions} cmbackup
 twrpBackup
 }
@@ -246,7 +246,7 @@ echo "Waiting for device..."
 echo
 echo "Pushing backup to device..."
 echo
-waitForDevice
+waitForDevice 2> /dev/null
 adb push ${FILEPATH}backup/ /sdcard/TWRP/BACKUPS/
 adb shell twrp restore cmbackup ${TWRPoptions}M
 echo
@@ -268,7 +268,7 @@ cmUpdater(){
 		adb reboot recovery
 		echo
 		echo 'Waiting for device...'
-		waitForDevice
+		waitForDevice 2> /dev/null
 		echo "Pushing 'cm-${CURL}.zip' to /sdcard/..."
 		adb push ${FILEPATH}cm-${CURL}.zip /sdcard/cm-${CURL}.zip
 		adb shell twrp install /sdcard/cm-${CURL}.zip
@@ -304,14 +304,14 @@ echo
 }
 
 clearCache(){
-waitForDevice
+waitForDevice 2> /dev/null
 adb shell twrp wipe cache
 adb shell twrp wipe dalvik
 start
 }
 
 waitForDevice() {
-until adb shell true
+until adb shell true 
 do
 sleep 1
 done
