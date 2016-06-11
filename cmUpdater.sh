@@ -3,7 +3,7 @@
 #VARIABLES:
 
 #------------------------------------------------------------------------------------------------------------------------------------------
-DEVICE=victara		#put your Device-ID here, for example 'hammerhead' for Nexus 5 (without quotes)
+DEVICE=condor		#put your Device-ID here, for example 'hammerhead' for Nexus 5 (without quotes)
 #------------------------------------------------------------------------------------------------------------------------------------------
 CMVERSION=13.0		#The CyanogenMod-Version you'd like to search for. Example: '13.0' (without quotes)
 #------------------------------------------------------------------------------------------------------------------------------------------
@@ -197,7 +197,8 @@ backupCreator(){
 adb reboot recovery
 echo
 echo 'Waiting for device...'
-adb wait-for-device shell twrp backup ${TWRPoptions} cmbackup
+waitForDevice
+adb shell twrp backup ${TWRPoptions} cmbackup
 twrpBackup
 }
 
@@ -245,7 +246,8 @@ echo "Waiting for device..."
 echo
 echo "Pushing backup to device..."
 echo
-adb wait-for-device push ${FILEPATH}backup/ /sdcard/TWRP/BACKUPS/
+waitForDevice
+adb push ${FILEPATH}backup/ /sdcard/TWRP/BACKUPS/
 adb shell twrp restore cmbackup ${TWRPoptions}M
 echo
 echo "Backup restored."
@@ -266,8 +268,7 @@ cmUpdater(){
 		adb reboot recovery
 		echo
 		echo 'Waiting for device...'
-		adb wait-for-device shell exit
-		sleep 5
+		waitForDevice
 		echo "Pushing 'cm-${CURL}.zip' to /sdcard/..."
 		adb push ${FILEPATH}cm-${CURL}.zip /sdcard/cm-${CURL}.zip
 		adb shell twrp install /sdcard/cm-${CURL}.zip
@@ -303,10 +304,20 @@ echo
 }
 
 clearCache(){
-adb wait-for-device shell twrp wipe cache
+waitForDevice
+adb shell twrp wipe cache
 adb shell twrp wipe dalvik
 start
 }
+
+waitForDevice() {
+until adb shell true
+do
+sleep 1
+done
+}
+#Workaround for some devices showing up as "recovery" instead of "device", causing infinite waiting.
+
 
 if adb shell cd /; then
 #Checks if your device is connected.
